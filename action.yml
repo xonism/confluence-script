@@ -1,4 +1,4 @@
-name: 'Run Script'
+name: 'Run Confluence Script'
 inputs:
   confluence-access-token:
     required: true
