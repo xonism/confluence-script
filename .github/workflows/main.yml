@@ -1,0 +1,24 @@
+name: Update Confluence Page with Test Names
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  update_confluence:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
+      - name: Install Dependencies
+        run: |
+          cd confluence
+          npm install
+        
+      - name: Update Confluence Page
+        uses: ./confluence
+        with:
+          confluence-access-token: ${{ secrets.CONFLUENCE_ACCESS_TOKEN }}
