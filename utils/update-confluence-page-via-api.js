@@ -18,36 +18,36 @@ const updateConfluencePageViaAPI = async (pageTitle, CONFLUENCE_ACCESS_TOKEN) =>
       })
 
     const responseBody = await response.json()
-  
+
     if (!response.ok) {
       const { statusCode, data, message } = responseBody
 
       throw new Error(`${statusCode} | ${data.authorized} | ${data.valid} | ${message}`)
     }
-  
+
     return responseBody.version.number
   }
 
   const getRequestBody = async (pageTitle) => {
     const fileContent = fs.readFileSync('confluence.html', { encoding: 'utf8' })
-  
+
     const currentPageVersion = await getCurrentPageVersionViaAPI()
-    
+
     return {
-      "id": CONFLUENCE_PAGE_ID,
-      "type": "page",
-      "title": pageTitle,
-      "space": {
-        "key": "QA"
-      },  
-      "body": {
-        "storage": {
-          "value": fileContent,
-          "representation": "storage"
+      'id': CONFLUENCE_PAGE_ID,
+      'type': 'page',
+      'title': pageTitle,
+      'space': {
+        'key': 'QA'
+      },
+      'body': {
+        'storage': {
+          'value': fileContent,
+          'representation': 'storage'
         }
       },
-      "version": {
-        "number": currentPageVersion + 1
+      'version': {
+        'number': currentPageVersion + 1
       }
     }
   }
@@ -63,7 +63,7 @@ const updateConfluencePageViaAPI = async (pageTitle, CONFLUENCE_ACCESS_TOKEN) =>
   const requestBody = await getRequestBody(formattedPageTitle)
 
   const response = await fetch(
-    `${CONFLUENCE_API_BASE_URL}/${CONFLUENCE_PAGE_ID}`, 
+    `${CONFLUENCE_API_BASE_URL}/${CONFLUENCE_PAGE_ID}`,
     {
       method: 'PUT',
       headers: {
@@ -75,7 +75,7 @@ const updateConfluencePageViaAPI = async (pageTitle, CONFLUENCE_ACCESS_TOKEN) =>
   )
 
   const responseBody = await response.json()
-  
+
   if (!response.ok) {
     const { statusCode, data, message } = responseBody
 
